@@ -1,0 +1,5 @@
+name: FactionWarps
+main: com.gmail.snowmanam2.factionwarps.FactionWarps
+version: 0.0.1
+author: snowman_am2
+depend: [Factions, Essentials]
