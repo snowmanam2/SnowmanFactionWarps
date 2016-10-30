@@ -1,20 +1,16 @@
 package com.gmail.snowmanam2.factionwarps;
 
 import java.text.MessageFormat;
-import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.earth2me.essentials.Essentials;
-import com.earth2me.essentials.User;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.entity.BoardColl;
 import com.massivecraft.factions.entity.Faction;
@@ -32,6 +28,7 @@ public class EngineHomes implements Listener {
 	
 	public static void init(JavaPlugin plugin) {
 		Bukkit.getPluginManager().registerEvents(EngineHomes.get(), plugin);
+		EssentialsWrapper.init();
 		registerPermissions();
 	}
 	
@@ -39,20 +36,42 @@ public class EngineHomes implements Listener {
 		MPerm.getCreative(23001, "userhome", "userhome", "teleport home", MUtil.set(Rel.LEADER, Rel.OFFICER, Rel.MEMBER, Rel.RECRUIT, Rel.ALLY), false, true, true);
 	}
 	
-	public boolean attemptTeleportHome(User user, String home) {
-		Location homeLoc = null;
+	public static boolean canSetHome(Player p) {
+		MPlayer mp = MPlayer.get(p);
+		PS psChunk = PS.valueOf(p.getLocation());
+		Faction f = BoardColl.get().getFactionAt(psChunk);
 		
-		try {
-			homeLoc = user.getHome(home);
-		} catch (Exception e) {
-			e.printStackTrace();
+		MPerm userhome = MPerm.get("userhome");
+		
+		return userhome.has(mp, f, false);
+	}
+	
+	public static void attemptSetHome(Player p, String home) {
+		MPlayer mp = MPlayer.get(p);
+		PS psChunk = PS.valueOf(p.getLocation());
+		Faction f = BoardColl.get().getFactionAt(psChunk);
+		MPerm userhome = MPerm.get("userhome");
+		
+		if (!userhome.has(mp, f, false)) {
+			String msg = Txt.parse("%s<b> does not allow you to set home", f.describeTo(mp, true));
+			p.sendMessage(msg);
+		} else {
+			EssentialsWrapper.setHome(p, home);
+			p.sendMessage(Messages.get("homeSet"));
 		}
 		
-		if (home == null) {
-			return true;
+	}
+	
+	public static void attemptTeleportHome(Player p, String home) {
+		
+		Location homeLoc = EssentialsWrapper.getHome(p, home);
+
+		if (homeLoc == null) {
+			p.sendMessage(Messages.get("invalidHome"));
+			return;
 		}
 		
-		MPlayer mp = MPlayer.get(user.getBase());
+		MPlayer mp = MPlayer.get(p);
 		PS psChunk = PS.valueOf(homeLoc);
 		Faction f = BoardColl.get().getFactionAt(psChunk);
 		
@@ -62,47 +81,13 @@ public class EngineHomes implements Listener {
 			String line2 = MessageFormat.format("teleport to your home at {0} {1}, {2}", 
 					homeLoc.getWorld().getName(), homeLoc.getBlockX(), homeLoc.getBlockZ());
 			String msg = Txt.parse("%s<b> does not allow you to", f.describeTo(mp, true));
-			user.sendMessage(msg+"\n"+line2);
+			p.sendMessage(msg+"\n"+line2);
+		} else {
+			EssentialsWrapper.goHome(p, home);
 		}
-		
-		return true;
 	}
+		
 	
-	@EventHandler
-	public void onCommandPreprocess(PlayerCommandPreprocessEvent e) {
-		boolean cancel = false;
-		
-		String command = e.getMessage().toLowerCase();
-		String[] args = command.split("\\s+");
-		Player p = e.getPlayer();
-		if (args[0].startsWith("/home ") || command.startsWith("/homes ")) {
-			Essentials ess = (Essentials)Bukkit.getServer().getPluginManager().getPlugin("Essentials");
-			User user = ess.getUser(p);
-			List<String> homes = user.getHomes();
-			if (args.length < 2 && homes.size() == 1) {
-				cancel = attemptTeleportHome(user, homes.get(0));
-			} else if (args.length >= 2) {
-				if (homes.contains(args[1])) {
-					cancel = attemptTeleportHome(user, args[1]);
-				}
-			}
-		} else if (command.startsWith("/sethome")) {
-			MPlayer mp = MPlayer.get(p);
-			PS psChunk = PS.valueOf(p.getLocation());
-			Faction f = BoardColl.get().getFactionAt(psChunk);
-			
-			MPerm userhome = MPerm.get("userhome");
-			
-			if (!userhome.has(mp, f, false)) {
-				String msg = Txt.parse("%s<b> does not allow you to %s<b>.", f.describeTo(mp, true), "set home");
-				p.sendMessage(msg);
-				cancel = true;
-			}
-			
-		}
-		
-		e.setCancelled(cancel);
-	}
 	@EventHandler
 	public void onPlayerJoinEvent(PlayerJoinEvent event) {
 		Player p = event.getPlayer();
@@ -117,4 +102,5 @@ public class EngineHomes implements Listener {
 			p.teleport(location.getWorld().getSpawnLocation(), TeleportCause.PLUGIN);
 		}
 	}
+	
 }

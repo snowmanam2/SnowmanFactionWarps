@@ -3,3 +3,16 @@ main: com.gmail.snowmanam2.factionwarps.FactionWarps
 version: 0.0.1
 author: snowman_am2
 depend: [Factions, Essentials]
+commands:
+  home:
+    description: Teleport to home
+    usage: /home [name]
+    permission: factionwarps.home
+  homes:
+    description: List all homes
+    usage: /homes
+    permission: factionwarps.homes
+  sethome:
+    description: Set home
+    usage: /sethome [name]
+    permission: factionswarps.sethome
