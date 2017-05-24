@@ -9,12 +9,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 
-public class FactionWarps extends JavaPlugin {
+public class FactionWarps extends JavaPlugin{
 	@Override
 	public void onEnable() {
 		Messages.loadMessages(this);
+		Config.loadConfig(this);
 		EngineHomes.init(this);
-		//EngineWarps.init(this);
+		EngineWarps.init(this);
+		WarpsColl.get().init();
 	}
 	
 	@Override

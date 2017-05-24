@@ -67,7 +67,7 @@ public class EngineHomes implements Listener {
 		Location homeLoc = EssentialsWrapper.getHome(p, home);
 
 		if (homeLoc == null) {
-			p.sendMessage(Messages.get("invalidHome"));
+			p.sendMessage(Messages.get("invalidHome", home));
 			return;
 		}
 		

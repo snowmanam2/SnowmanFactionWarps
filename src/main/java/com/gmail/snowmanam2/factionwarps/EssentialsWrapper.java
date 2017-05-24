@@ -44,6 +44,15 @@ public class EssentialsWrapper {
 		}
 	}
 	
+	public static void teleportPlayer (Player p, Location loc) {
+		User user = ess.getUser(p);
+		try {
+			user.getTeleport().teleport(loc, null, TeleportCause.COMMAND);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+	 
 	public static void setHome(Player p, String name) {
 		User user = ess.getUser(p);
 		Location location = p.getLocation();
