@@ -15,6 +15,7 @@ warps:
   warpSet: "&6Warp set."
   warpDeleted: "&6Warp removed."
   listHeader: "&dWarps for {0}:"
+  listNextCost: "&7Next warp will cost {0}"
   listItem: "&d{0} &7password = {1}"
   hiddenPassword: "(hidden)"
   

@@ -33,14 +33,14 @@ public class CmdFactionsWarp extends FactionsCommand {
 		
 		if (w != null) {
 			if (w.isValid(faction)) {
-				if (w.getPassword() == password) {
+				if (w.getPassword().equals(password)) {
 					EssentialsWrapper.teleportPlayer(msender.getPlayer(), w.getLocation().asBukkitLocation());
 				} else {
 					msender.msg(Messages.get("warps.incorrectPassword"));
 				}
 			} else {
 				PS loc = w.getLocation();
-				msender.msg(Messages.get("warps.removeInvalid", name, loc.getWorld(), loc.getBlockX(), loc.getBlockZ(), faction.describeTo(msender)));
+				msender.msg(Messages.get("warps.removeInvalid", name, loc.getWorld(), loc.getLocationX().intValue(), loc.getLocationZ().intValue(), faction.describeTo(msender)));
 				warps.removeWarp(name);
 			}
 		} else {

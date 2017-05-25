@@ -30,7 +30,6 @@ public class CmdFactionsSetWarp extends FactionsCommand {
 		String password = this.readArg("");
 		Faction senderFaction = this.readArg(msenderFaction);
 		Player p = msender.getPlayer();
-		EconomyWrapper econ = new EconomyWrapper(p);
 		
 		PS location = PS.valueOf(p.getLocation());
 		Faction boardFaction = BoardColl.get().getFactionAt(location);
@@ -48,14 +47,14 @@ public class CmdFactionsSetWarp extends FactionsCommand {
 		int warpNumber = warps.getNumber();
 		
 		BigDecimal cost = Config.getNextWarpCost(warpNumber);
-		BigDecimal availableMoney = econ.getMoney();
+		BigDecimal availableMoney = EconomyWrapper.getMoney(p);
 		if (availableMoney.compareTo(cost) >= 0) {
 			Warp w = new Warp(PS.valueOf(p.getLocation()), password);
 			warps.addWarp(name, w);
 			msender.msg(Messages.get("warps.warpSet", name));
 			
 			if (cost.compareTo(new BigDecimal(0)) > 0) {
-				econ.subtract(cost);
+				EconomyWrapper.subtract(p, cost);
 			}
 		} else {
 			msender.msg(Messages.get("insufficientFunds"));

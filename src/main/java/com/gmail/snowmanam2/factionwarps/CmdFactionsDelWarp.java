@@ -30,6 +30,7 @@ public class CmdFactionsDelWarp extends FactionsCommand {
 		
 		if (warps.getWarp(name) == null) {
 			msender.msg(Messages.get("warps.noExist"));
+			return;
 		}
 		
 		warps.removeWarp(name);

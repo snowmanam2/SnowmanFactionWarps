@@ -17,7 +17,7 @@ public class Config {
 		config = plugin.getConfig();
 	}
 	
-	public static BigDecimal getNextWarpCost (int newWarpNumber) {
+	public static BigDecimal getNextWarpCost (int currentWarpNumber) {
 		if (!config.contains("warpCosts")) {
 			return new BigDecimal(0);
 		}
@@ -27,8 +27,8 @@ public class Config {
 			return new BigDecimal(0);
 		}
 		
-		if (newWarpNumber >= costs.size()) newWarpNumber = costs.size()-1;
+		if (currentWarpNumber >= costs.size()) currentWarpNumber = costs.size()-1;
 		
-		return new BigDecimal(costs.get(newWarpNumber));	
+		return new BigDecimal(costs.get(currentWarpNumber));	
 	}
 }
