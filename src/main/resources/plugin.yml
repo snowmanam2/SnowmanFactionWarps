@@ -16,8 +16,4 @@ commands:
     description: Set home
     usage: /sethome [name]
     permission: factionswarps.sethome
-permissions:
-  factions.listwarps: {description: list available warps, default: false}
-  factions.setwarp: {description: set faction warp, default: false}
-  factions.delwarp: {description: delete faction warp, default: false}
-  factions.warp: {description: teleport to warp , default: false}
+

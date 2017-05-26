@@ -5,7 +5,7 @@ homeSet: "&6Home set to current location."
 homeList: "&6Homes:&r {0}"
 setHomeUsage: ""
 insufficientFunds: "&4Insufficient funds."
-moneyDeposit: "&{0} was deposited to your account."
+moneyDeposit: "&a{0} was deposited to your account."
 moneyWithdraw: "&7{0} was withdrawn from your account."
 warps:
   incorrectPassword: "&4Incorrect warp password."
@@ -16,6 +16,12 @@ warps:
   warpDeleted: "&6Warp removed."
   listHeader: "&dWarps for {0}:"
   listNextCost: "&7Next warp will cost {0}"
-  listItem: "&d{0} &7password = {1}"
+  listItem: "&d{0}"
+  listItemPassword: "&d{0} &7password = {1}"
   hiddenPassword: "(hidden)"
+commands:
+  listwarps: "list available warps"
+  setwarp: "set faction warp"
+  delwarp: "delete faction warp"
+  warp: "teleport to warp"
   

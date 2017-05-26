@@ -36,7 +36,12 @@ public class Warps extends Entity<Warps> {
 				password = w.getPassword();
 			}
 			
-			String desc = Messages.get("warps.listItem", key, password);
+			String desc;
+			if (password.equals("")) {
+				desc = Messages.get("warps.listItem", key);
+			} else {
+				desc = Messages.get("warps.listItemPassword", key, password);
+			}
 			warpList.add(desc);
 		}
 		

@@ -11,6 +11,8 @@ public class CmdFactionsListWarps extends FactionsCommand {
 		this.addAliases("listwarps");
 		this.addArg(ARFaction.get(), "faction", "you");
 		
+		this.setDesc(Messages.get("commands.listwarps"));
+		
 	}
 	
 	@Override

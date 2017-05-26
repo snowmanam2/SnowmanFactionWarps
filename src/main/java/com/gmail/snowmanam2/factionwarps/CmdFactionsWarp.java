@@ -15,6 +15,7 @@ public class CmdFactionsWarp extends FactionsCommand {
 		this.addArg(ARString.get(), "password", "");
 		this.addArg(ARFaction.get(), "faction", "you");
 		
+		this.setDesc(Messages.get("commands.warp"));
 	}
 	
 	@Override

@@ -20,6 +20,7 @@ public class CmdFactionsSetWarp extends FactionsCommand {
 		this.addArg(ARString.get(), "password", "None");
 		this.addArg(ARFaction.get(), "faction", "you");
 		
+		this.setDesc(Messages.get("commands.setwarp"));
 	}
 	
 	@Override
@@ -43,6 +44,8 @@ public class CmdFactionsSetWarp extends FactionsCommand {
 		if ( ! MPerm.get("setwarp").has(msender, senderFaction, true)) return;
 		
 		Warps warps = WarpsColl.get(senderFaction);
+		
+		if (password.equalsIgnoreCase("none")) password = "";
 		
 		int warpNumber = warps.getNumber();
 		
