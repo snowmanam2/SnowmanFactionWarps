@@ -16,7 +16,7 @@ import com.massivecraft.massivecore.ps.PS;
 public class CmdFactionsSetWarp extends FactionsCommand {
 	public CmdFactionsSetWarp() {
 		this.addAliases("setwarp");
-		this.addArg(ARString.get(), "name");
+		this.addArg(ARString.get(), "name", "");
 		this.addArg(ARString.get(), "password", "None");
 		this.addArg(ARFaction.get(), "faction", "you");
 		
@@ -27,7 +27,7 @@ public class CmdFactionsSetWarp extends FactionsCommand {
 	public void perform() throws MassiveException
 	{
 		// Args
-		String name = this.readArg();
+		String name = this.readArg("");
 		String password = this.readArg("");
 		Faction senderFaction = this.readArg(msenderFaction);
 		Player p = msender.getPlayer();
@@ -44,6 +44,13 @@ public class CmdFactionsSetWarp extends FactionsCommand {
 		if ( ! MPerm.get("setwarp").has(msender, senderFaction, true)) return;
 		
 		Warps warps = WarpsColl.get(senderFaction);
+		
+		if (name.equals("")) {
+			
+			int warpNumber = warps.getNumber();
+			msender.msg(Messages.get("warps.listNextCost", EconomyWrapper.formatMoney(Config.getNextWarpCost(warpNumber))));
+			return;
+		}
 		
 		if (password.equalsIgnoreCase("none")) password = "";
 		

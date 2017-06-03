@@ -31,15 +31,14 @@ public class Warps extends Entity<Warps> {
 		for (String key: warps.keySet()) {
 			Warp w = warps.get(key);
 			
-			String password = Messages.get("warps.hiddenPassword");
-			if (showPassword) {
-				password = w.getPassword();
-			}
+			String password = w.getPassword();
 			
 			String desc;
 			if (password.equals("")) {
 				desc = Messages.get("warps.listItem", key);
 			} else {
+				if (!showPassword) password = Messages.get("warps.hiddenPassword");
+				
 				desc = Messages.get("warps.listItemPassword", key, password);
 			}
 			warpList.add(desc);
